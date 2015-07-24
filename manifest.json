@@ -1,0 +1,20 @@
+{
+  "name": "OAuth Extension",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Enables Oauth2 Authentication",
+  "icons": { "128": "auth.png" },
+  "permissions": ["storage", "webRequest", "*://*/*", "background", "webRequestBlocking"],
+  "browser_action": {
+    "default_title": "",
+    "default_icon": "auth.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent":true
+  },
+
+  "options_page": "options.html"
+
+}
