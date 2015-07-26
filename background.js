@@ -1,42 +1,73 @@
-chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
-    var urlPattern = getUrlPattern();
-    if (details.url.match(urlPattern)) {
-        console.log("URL:" + details.url);
-        console.log("Pattern:" + urlPattern);
-    //    var token = getToken();
-    //    console.log("Token: " + token);
-        console.log("Daniel");
-        console.log(details.url)
-        details.requestHeaders.push({name:"Authorization",value:"Bearer db38f2ad-4127-4226-afd6-ea57a05719ed"});
-    }
 
+var urlPatterns;
+var authUrl;
+var userName;
+var password;
+var token;
+var fixedToken;
+
+function fetchToken() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', authUrl, true, userName, password);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            token = xhr.responseText;
+        }
+    }
+    xhr.send(null);
+}
+
+function init() {
+    chrome.storage.sync.get({
+        url: '<unknown>',
+        username: '<unknown>',
+        password: '<unknown>',
+        authURL: '<unknown>'
+
+    }, function(items) {
+        urlPatterns = items.url;
+        userName = items.username;
+        authUrl = items.authURL;
+        password = items.password;
+        fetchToken();
+    });
+}
+
+function updateSetting (url_pattern, user_name, auth_url, pass_word) {
+    urlPatterns = url_pattern;
+    authUrl = auth_url;
+    userName = user_name;
+    password = pass_word;
+    fetchToken();
+}
+
+
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+    if (token && urlPatterns) {
+        var urlPatternsArray =  urlPatterns.split("\n")
+        var match = false;
+        for (i = 0; i < urlPatternsArray.length; i++) {
+            if (details.url.startsWith(urlPatternsArray[i])) {
+                match = true;
+                break;
+            }
+        }
+        if (match) {
+            console.log("Setting Authorization Header.");
+            details.requestHeaders.push({name:"Authorization",value:"Bearer " + token});
+        }
+    }
     return {requestHeaders: details.requestHeaders};
 },
 {"urls":["*://*/*"]},
 ["requestHeaders", "blocking"]);
 
+chrome.alarms.onAlarm.addListener(function(alarm){
+    fetchToken();
+});
 
-function getUrlPattern() {
-    var urlPattern;
+init()
 
-    chrome.storage.sync.get({
-        url: 'red'
-    }, function(items) {
-        urlPattern = items.url;
-    });
-    return urlPattern;
-}
+chrome.alarms.create("refresh_token", {periodInMinutes:1});
 
-function getToken() {
-    var token;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://token.auth.zalando.com/access_token', true, 'dnowak', '');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-            token = xhr.responseText;
-        }
-    }
-    xhr.send(null);
-    return token;
-}
+

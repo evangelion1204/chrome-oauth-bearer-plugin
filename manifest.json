@@ -1,20 +1,14 @@
 {
-  "name": "OAuth Extension",
+  "name": "Zalando Authentication Extension",
   "version": "0.1",
   "manifest_version": 2,
-  "description": "Enables Oauth2 Authentication",
+  "description": "Fetches periodically a new token from your configured Auth Url and passes it via the Authorization Header to configured urls. Everything can be confuried by the options page of this chrome extension.",
   "icons": { "128": "auth.png" },
-  "permissions": ["storage", "webRequest", "*://*/*", "background", "webRequestBlocking"],
-  "browser_action": {
-    "default_title": "",
-    "default_icon": "auth.png",
-    "default_popup": "popup.html"
-  },
+  "permissions": ["storage", "webRequest", "*://*/*", "background", "webRequestBlocking", "alarms"],
   "background": {
     "scripts": ["background.js"],
     "persistent":true
   },
-
   "options_page": "options.html"
 
 }
