@@ -11,9 +11,9 @@ See also the `HTTPie Zign plugin`_ which does something similar for HTTP request
 
 .. _HTTPie Zign plugin: https://pypi.python.org/pypi/httpie-zign
 
-==========================
+
 Usage
-==========================
+=====
 
 1. cd <plugins_dir>
 2. git clone git@github.com:zalando/chrome-oauth-bearer-plugin.git
