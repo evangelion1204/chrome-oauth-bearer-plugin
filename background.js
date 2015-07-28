@@ -68,6 +68,6 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 
 init()
 
-chrome.alarms.create("refresh_token", {periodInMinutes:1});
+chrome.alarms.create("refresh_token", {periodInMinutes:40});
 
 
