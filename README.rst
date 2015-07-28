@@ -18,7 +18,7 @@ Usage
 1. cd <plugins_dir>
 2. git clone git@github.com:zalando/chrome-oauth-bearer-plugin.git
 3. open Chrome
-4. open Chrome extensions [enter chrome://extensions/ in your navbar]
+4. open `Chrome extensions`_ [enter chrome://extensions/ in your navbar]
 5. enable the developer mode
 6. Load unpacked extensions ...
 7. Select the plugin you just have downloaded via git
@@ -26,5 +26,5 @@ Usage
 9. enter the token service URL, the URLs where the auth header should be added, your username and password
 10. start using your APIs via Chrome
 
-
+.. _Chrome extensions: chrome://extensions/
 
