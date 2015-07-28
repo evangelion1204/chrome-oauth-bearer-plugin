@@ -11,7 +11,7 @@ function fetchToken() {
     xhr.open('GET', authUrl, true, userName, password);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
-            token = xhr.responseText;
+            token = xhr.responseText.replace("\n", "");
         }
     }
     xhr.send(null);
