@@ -29,11 +29,5 @@ function restore_options() {
   });
 }
 
-function form() {
-    alert("Wurst");
-    return false;
-}
-
-
 document.getElementById('save').addEventListener('click', save_options);
 restore_options();

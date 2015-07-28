@@ -2,7 +2,7 @@
   "name": "Zalando Chrome OAuth Bearer Plugin",
   "version": "0.7",
   "manifest_version": 2,
-  "description": "Fetches periodically a new token from your configured Auth Url and passes it via the Authorization Header to configured urls. Everything can be confuried by the options page of this chrome extension.",
+  "description": "Fetches periodically a new token from your configured Auth URL and passes it via the Authorization Header to configured URLs. Everything can be configured by the options page of this Chrome extension.",
   "icons": { "128": "auth.png" },
   "permissions": ["storage", "webRequest", "*://*/*", "background", "webRequestBlocking", "alarms"],
   "background": {
