@@ -7,14 +7,22 @@ var token;
 var fixedToken;
 
 function fetchToken() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', authUrl, true, userName, password);
+    var xhr = new XMLHttpRequest();   // new HttpRequest instance
+    xhr.open("POST", authUrl);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader("X-APPDOMAINID", "17");
+
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
-            token = xhr.responseText.replace("\n", "");
+            parsed = JSON.parse(xhr.responseText);
+            token = {
+                access_token: parsed.access_token,
+                refresh_token: parsed.refresh_token
+            }
         }
-    }
-    xhr.send(null);
+    };
+
+    xhr.send(JSON.stringify({email: userName, password: password}));
 }
 
 function init() {
@@ -54,7 +62,10 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
         }
         if (match) {
             console.log("Setting Authorization Header.");
-            details.requestHeaders.push({name:"Authorization",value:"Bearer " + token});
+            details.requestHeaders.push({
+                name: "X-Zalando-Auth",
+                value: window.btoa(JSON.stringify(token)).replace(/=*$/g, '')
+            });
         }
     }
     return {requestHeaders: details.requestHeaders};
