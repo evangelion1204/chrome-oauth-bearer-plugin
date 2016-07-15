@@ -7,6 +7,7 @@ var token;
 var fixedToken;
 
 function fetchToken() {
+    console.log('Fetching token.')
     var xhr = new XMLHttpRequest();   // new HttpRequest instance
     xhr.open("POST", authUrl);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -72,6 +73,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 },
 {"urls":["*://*/*"]},
 ["requestHeaders", "blocking"]);
+
+chrome.webRequest.onCompleted.addListener(function(details) {
+    if (details.statusCode === 401) {
+        fetchToken();
+    }
+}, {"urls":["*://*/*"]});
 
 chrome.alarms.onAlarm.addListener(function(alarm){
     fetchToken();
