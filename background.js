@@ -7,7 +7,6 @@ var token;
 var fixedToken;
 
 function fetchToken() {
-    console.log('Fetching token.')
     var xhr = new XMLHttpRequest();   // new HttpRequest instance
     xhr.open("POST", authUrl);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -27,6 +26,7 @@ function fetchToken() {
 }
 
 function init() {
+    console.log('Init');
     chrome.storage.sync.get({
         url: '<unknown>',
         username: '<unknown>',
@@ -34,6 +34,7 @@ function init() {
         authURL: '<unknown>'
 
     }, function(items) {
+        console.log('Loaded settings', items);
         urlPatterns = items.url;
         userName = items.username;
         authUrl = items.authURL;
@@ -42,7 +43,7 @@ function init() {
     });
 }
 
-function updateSetting (url_pattern, user_name, auth_url, pass_word) {
+function updateSetting(url_pattern, user_name, auth_url, pass_word) {
     urlPatterns = url_pattern;
     authUrl = auth_url;
     userName = user_name;
@@ -83,9 +84,13 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 chrome.alarms.onAlarm.addListener(function(alarm){
     fetchToken();
 });
+chrome.alarms.create("refresh_token", {periodInMinutes: 30});
 
-init()
+chrome.commands.onCommand.addListener(function(command) {
+    console.log('Command:', command);
+});
 
-chrome.alarms.create("refresh_token", {periodInMinutes:40});
+init();
+
 
 

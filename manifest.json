@@ -9,6 +9,18 @@
     "scripts": ["background.js"],
     "persistent":true
   },
+  "browser_action": {
+    "default_icon": "auth.png",
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "refresh-token": {
+      "description": "Refresh token"
+    },
+    "re-authenticate": {
+      "description": "Re-authenticate"
+    }
+  },
   "options_page": "options.html"
 
 }
