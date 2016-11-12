@@ -77,7 +77,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 
 chrome.webRequest.onCompleted.addListener(function(details) {
     if (details.statusCode === 401) {
-        fetchToken();
+        chrome.notifications.create('failed', {
+            type: 'basic',
+            iconUrl: 'auth.png',
+            title: 'Authentication Failed',
+            message: 'Invalid login details, please check service url and credentials'
+        });
     }
 }, {"urls":["*://*/*"]});
 
@@ -91,6 +96,3 @@ chrome.commands.onCommand.addListener(function(command) {
 });
 
 init();
-
-
-
